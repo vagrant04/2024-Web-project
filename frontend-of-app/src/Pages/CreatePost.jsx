@@ -12,37 +12,49 @@ function CreatePost() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const PostData = {
-            circleId: parseInt(circleId),
-            content: postText,
-            images: [postImage]
-        };
+        if (postText && postImage) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64Image = reader.result;
+                const postData = {
+                    circleId: parseInt(circleId),
+                    content: postText,
+                    images: [base64Image]
+                };
 
-        axios.post('http://127.0.0.1:7001/posts/CreatePosts', PostData, {
+                addPost(postData);
+                setPostText('');
+                setPostImage(null);
+            };
+            reader.readAsDataURL(postImage);
+        }
+    };
+
+    function addPost(postData) {
+        axios.post('http://127.0.0.1:7001/posts/CreatePosts', postData, {
             headers: {
                 'Content-Type': 'application/json'
             }
         })
             .then(response => {
                 console.log('Post created:', response.data);
-                navigate(`/CirclePage/${circleId}`)
-                // 处理成功后的逻辑，例如跳转回圈子页面
+                navigate(`/CirclePage/${circleId}`);
             })
             .catch(error => {
                 console.error('Error creating post:', error);
             });
-    };
+    }
 
     return (
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">发帖子</h2>
             <form onSubmit={handleSubmit}>
-        <textarea
-            value={postText}
-            onChange={(e) => setPostText(e.target.value)}
-            placeholder="写点什么..."
-            className="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-        />
+                <textarea
+                    value={postText}
+                    onChange={(e) => setPostText(e.target.value)}
+                    placeholder="写点什么..."
+                    className="w-full px-3 py-2 mb-4 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+                />
                 <input
                     type="file"
                     onChange={(e) => setPostImage(e.target.files[0])}
@@ -50,6 +62,7 @@ function CreatePost() {
                 />
                 <button
                     type="submit"
+                    onClick={handleSubmit}
                     className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-200"
                 >
                     发帖

@@ -28,5 +28,4 @@ export class CirclesService {
   async getCircleByCircleId(userId: number) {
     return data.posts.find(circle => circle.circleId === userId);
   }
-
 }

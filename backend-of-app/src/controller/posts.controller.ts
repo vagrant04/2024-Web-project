@@ -22,8 +22,10 @@ export class PostsController {
   @Post('/CreatePosts')
   async createPosts(
     @Body() body: { circleId: number; content: string; images: string[] }
+    //@Files() files: any
   ) {
     const { circleId, content, images } = body;
+
     const newPost = await this.postsService.createPost({ circleId, content, images });
     return newPost;
   }

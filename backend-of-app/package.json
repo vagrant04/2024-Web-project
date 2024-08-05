@@ -10,6 +10,7 @@
     "@midwayjs/info": "^3.16.6",
     "@midwayjs/koa": "^3.16.6",
     "@midwayjs/logger": "^3.1.0",
+    "@midwayjs/upload": "^3.16.8",
     "@midwayjs/validate": "^3.16.6"
   },
   "devDependencies": {

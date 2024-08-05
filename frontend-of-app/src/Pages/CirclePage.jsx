@@ -126,12 +126,13 @@ const PostCard = ({ post }) => {
                 </div>
             </div>
             <p className="mb-4">{post.content}</p>
-            {/*<div className="grid grid-cols-2 gap-4 mb-4">*/}
-            {/*    /!* eslint-disable-next-line react/prop-types *!/*/}
-            {/*    {post.images.map((image, index) => (*/}
-            {/*        <img key={index} src={image} alt={`post-${index}`} className="rounded-lg" />*/}
-            {/*    ))}*/}
-            {/*</div>*/}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+                {/*{post.images.map((image, index) => (*/}
+                {/*    <img key={index} src={image} alt={`post-${index}`} className="rounded-lg" />*/}
+                {/*))}*/}
+
+                <img src={(post.images)[0]} alt={post.name} className="rounded-lg"/>
+            </div>
             <div className="flex justify-between text-gray-600">
                 <div className="flex items-center">
                     <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
