@@ -7,14 +7,14 @@ export class CirclesService {
     return data.circles;
   }
 
-  async createCircle(name: string, image: string) {
+  async createCircle(circle: { name: string; imagePath: any }) {
     const newCircle = {
       id: data.circles.length + 1,
-      name: name,
-      creator: 1, // Assuming the creator ID is 1 for simplicity
+      name: circle.name,
+      creator: 1,
       members: [],
+      imagePath: circle.imagePath, // Assuming the file is saved in the uploads directory
       posts: [],
-      image: image,
     };
     data.circles.push(newCircle);
     console.log('new Circles: ', data.circles);

@@ -11,39 +11,41 @@ function CreateCircle() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (circleName && circleImage) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64Image = reader.result;
-                const circleData = {
-                    name: circleName,
-                    image: base64Image
-                };
+            const formData = new FormData();
+            formData.append('name', circleName);
 
-                addCircle(circleData);
-                setCircleName('');
-                setCircleImage(null);
-            };
-            reader.readAsDataURL(circleImage);
+            const fileInput = document.querySelector('input[type="file"]');
+            const file = fileInput.files[0];
+            formData.append('file', file);
+
+            // Debugging: Log FormData content
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+            console.log('FormData:', formData);
+            console.log('File details:', file.name, file.size, file.type);
+
+            addCircle(formData);
+            setCircleName('');
+            setCircleImage(null);
         }
     };
 
-    function addCircle(circleData) {
-        //向后端发送请求，创建兴趣圈
-        axios.post('http://127.0.0.1:7001/circles/CreateCircles', circleData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+    function addCircle(formData) {
+        fetch('http://127.0.0.1:7001/circles/CreateCircles', {
+            method: 'POST',
+            body: formData,
         })
-            .then(response => {
-                console.log('Create New Circle:', response.data);
+            .then(response => response.json())
+            .then(data => {
+                console.log('Create New Circle:', data);
                 navigate('/Homepage');
-                // 处理成功的逻辑
             })
             .catch(error => {
                 console.error('Error:', error);
-                // 处理错误的逻辑
             });
     }
+
     return (
         <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">创建兴趣圈</h2>

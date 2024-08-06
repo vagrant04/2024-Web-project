@@ -15,8 +15,8 @@ export const data = {
     // 更多用户
   ],
   circles: [
-    { id: 1, name: '兴趣圈1', creator: 1, members: [1, 2], posts: [1, 2], image: 'circle1.png'},
-    { id: 2, name: '兴趣圈2', creator: 2, members: [2], posts: [3], image: 'circle2.png'},
+    { id: 1, name: '羽毛球圈', creator: 1, members: [1, 2], posts: [1, 2], imagePath: 'circle1.jpg'},
+    { id: 2, name: '南京大学学习圈', creator: 2, members: [2], posts: [3], imagePath: 'circle2.jpg'},
     // 更多兴趣圈
   ],
   posts: [

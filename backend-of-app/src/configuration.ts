@@ -8,6 +8,9 @@ import { join } from 'path';
 // import { DefaultErrorFilter } from './filter/default.filter';
 // import { NotFoundFilter } from './filter/notfound.filter';
 import { ReportMiddleware } from './middleware/report.middleware';
+import * as staticFile from '@midwayjs/static-file';
+//import * as staticServe from 'koa-static';
+import * as fs from 'fs/promises';
 
 @Configuration({
   imports: [
@@ -19,6 +22,7 @@ import { ReportMiddleware } from './middleware/report.middleware';
     },
     crossDomain,
     upload,
+    staticFile,
   ],
   importConfigs: [join(__dirname, './config')],
 })
@@ -29,7 +33,25 @@ export class MainConfiguration {
   async onReady() {
     // add middleware
     this.app.useMiddleware([ReportMiddleware]);
-    // add filter
-    // this.app.useFilter([NotFoundFilter, DefaultErrorFilter]);
+    // Serve static files from the uploads directory
+    //this.app.use(staticServe(join(__dirname, '../uploads')));
+
+    await this.copyFiles(
+      join(__dirname, '../pictures'),
+      join(__dirname, '../uploads')
+    );
+  }
+
+  async copyFiles(sourceDir: string, targetDir: string) {
+    try {
+      const files = await fs.readdir(sourceDir);
+      for (const file of files) {
+        const sourceFile = join(sourceDir, file);
+        const targetFile = join(targetDir, file);
+        await fs.copyFile(sourceFile, targetFile);
+      }
+    } catch (error) {
+      console.error('Error copying files:', error);
+    }
   }
 }

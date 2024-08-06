@@ -48,7 +48,7 @@ export default function HomePage() {
             </div>
 
             <div className="mb-8">
-                <img src="https://via.placeholder.com/1200x400" alt="沃尔沃兴趣圈" className="w-full rounded-lg"/>
+                <img src={`http://127.0.0.1:7001/pictures/HomePage_Picture.jpg`} alt="沃尔沃兴趣圈" className="w-full rounded-lg"/>
             </div>
 
             <div className="flex items-center justify-between mb-8">
@@ -77,7 +77,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {circles.map(circle => (
                     <div key={circle.id} className="bg-white rounded-lg shadow p-6">
-                        <img src={circle.image} alt={circle.name} className="w-full h-48 object-cover rounded-t-lg"/>
+                        <img src={`http://127.0.0.1:7001/uploads/${circle.imagePath}`} alt={circle.name} className="w-full h-48 object-cover rounded-t-lg"/>
                         <h2 className="mt-4 text-xl font-bold">{circle.name}</h2>
                         <p className="text-gray-500">创建者: {circle.creator} | 成员: {circle.members.length}</p>
                         <button onClick={() => handleJoin(circle.id)} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">加入</button>

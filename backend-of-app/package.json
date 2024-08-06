@@ -10,12 +10,18 @@
     "@midwayjs/info": "^3.16.6",
     "@midwayjs/koa": "^3.16.6",
     "@midwayjs/logger": "^3.1.0",
+    "@midwayjs/static-file": "^3.16.8",
     "@midwayjs/upload": "^3.16.8",
-    "@midwayjs/validate": "^3.16.6"
+    "@midwayjs/validate": "^3.16.6",
+    "@types/multer": "^1.4.11",
+    "egg": "^3.27.1",
+    "koa-static": "^5.0.0"
   },
   "devDependencies": {
     "@midwayjs/mock": "^3.16.5",
+    "@types/egg": "^1.0.3",
     "@types/jest": "^29.2.0",
+    "@types/koa-static": "^4.0.4",
     "@types/node": "14",
     "cross-env": "^6.0.0",
     "jest": "^29.2.2",
