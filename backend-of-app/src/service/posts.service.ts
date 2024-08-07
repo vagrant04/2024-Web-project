@@ -13,7 +13,7 @@ export class PostsService {
     return data.posts.find(post => post.id === postId);
   }
 
-  async createPost(post: { circleId: number; content: string; images: string[] }) {
+  async createPost(post: { circleId: number; content: string; images: string }) {
     const newPost = {
       id: data.posts.length + 1,
       ...post,
@@ -23,6 +23,7 @@ export class PostsService {
       date: new Date().toLocaleDateString(),
       likes: 0,
       comments: [],
+      shares: 0,
     };
     data.posts.push(newPost);
     data.circles[post.circleId - 1].posts.push(newPost.id);

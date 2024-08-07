@@ -5,6 +5,9 @@ import 'tailwindcss/tailwind.css';
 import PropTypes from "prop-types";
 import axios from 'axios';
 
+import comment_icon from '../../svgs/comment-regular.svg';
+import like_icon from '../../svgs/thumbs-up-solid.svg';
+import share_icon from '../../svgs/share-from-square-solid.svg';
 
 // eslint-disable-next-line react/prop-types
 export default function CirclePage(){
@@ -125,31 +128,21 @@ const PostCard = ({ post }) => {
                     <p className="text-sm text-gray-600">{post.date}</p>
                 </div>
             </div>
-            <p className="mb-4">{post.content}</p>
+            <p className="mb-4 text-left">{post.content}</p>
             <div className="grid grid-cols-2 gap-4 mb-4">
-                {/*{post.images.map((image, index) => (*/}
-                {/*    <img key={index} src={image} alt={`post-${index}`} className="rounded-lg" />*/}
-                {/*))}*/}
-
-                <img src={(post.images)[0]} alt={post.name} className="rounded-lg"/>
+                <img src={`http://127.0.0.1:7001/uploads/${post.images}`} alt={post.id} className="rounded-lg"/>
             </div>
             <div className="flex justify-between text-gray-600">
                 <div className="flex items-center">
-                    <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d=""/>
-                    </svg>
+                    <img src={like_icon} alt="like_icon" className={"w-6 h-6 mr-2"}/>
                     <span>{post.likes}</span>
                 </div>
                 <div className="flex items-center">
-                    <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d=""/>
-                    </svg>
-                    <span>评论有{post.comments.length}条</span>
+                    <img src={comment_icon} alt="comment_icon" className="w-6 h-6 mr-2"/>
+                    <span>{post.comments.length}</span>
                 </div>
                 <div className="flex items-center">
-                    <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                        <path d=""/>
-                    </svg>
+                    <img src={share_icon} alt="share_icon" className="w-6 h-6 mr-2"/>
                     <span>{post.shares}</span>
                 </div>
             </div>
@@ -157,7 +150,7 @@ const PostCard = ({ post }) => {
                 <h5 className="text-lg font-bold mb-2">评论</h5>
                 {comments.map(comment => (
                     <div key={comment.id} className="mb-2">
-                        <p className="text-sm text-gray-800">{comment.creator}: {comment.text}</p>
+                        <p className="text-sm text-gray-800 text-left">{comment.creator}: {comment.text}</p>
                     </div>
                 ))}
                 <div className="flex items-center mt-4">

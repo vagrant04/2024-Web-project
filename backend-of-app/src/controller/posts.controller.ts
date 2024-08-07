@@ -1,5 +1,7 @@
-import { Controller, Post, Body, Inject, Get, Param } from '@midwayjs/core';
+import { Controller, Post, Inject, Get, Param, Fields, Files } from "@midwayjs/core";
 import { PostsService } from '../service/posts.service';
+import { join } from 'path';
+import * as fs from 'fs';
 
 @Controller('/posts')
 export class PostsController {
@@ -21,12 +23,23 @@ export class PostsController {
 
   @Post('/CreatePosts')
   async createPosts(
-    @Body() body: { circleId: number; content: string; images: string[] }
+    @Fields() fields,
+    @Files() files
     //@Files() files: any
   ) {
-    const { circleId, content, images } = body;
+    const { circleId, content } = fields;
+    const file = files[0];
 
-    const newPost = await this.postsService.createPost({ circleId, content, images });
+    console.log('file: ', file);
+    if (!file || !file.filename) {
+      throw new Error('Post Image file is required');
+    }
+
+    const intCircleId = parseInt(circleId, 10);
+    const filePath = join(__dirname, '../../uploads', file.filename);
+    await fs.promises.rename(file.data, filePath);
+
+    const newPost = await this.postsService.createPost({ circleId: intCircleId, content, images: file.filename});
     return newPost;
   }
 }

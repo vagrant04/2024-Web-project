@@ -44,7 +44,6 @@ export default function HomePage() {
             <div className="flex border-b mb-8">
                 <button className="px-4 py-2 border-b-2 border-blue-500 text-blue-500 focus:outline-none">兴趣圈
                 </button>
-                <button className="px-4 py-2 text-gray-500 focus:outline-none">俱乐部</button>
             </div>
 
             <div className="mb-8">

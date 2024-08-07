@@ -13,28 +13,24 @@ function CreatePost() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (postText && postImage) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64Image = reader.result;
-                const postData = {
-                    circleId: parseInt(circleId),
-                    content: postText,
-                    images: [base64Image]
-                };
+            const formData = new FormData();
+            formData.append('circleId', circleId);
+            formData.append('content', postText);
 
-                addPost(postData);
-                setPostText('');
-                setPostImage(null);
-            };
-            reader.readAsDataURL(postImage);
+            const fileInput = document.querySelector('input[type="file"]');
+            const file = fileInput.files[0];
+            formData.append('file', file);
+
+            addPost(formData);
+            setPostText('');
+            setPostImage(null);
         }
     };
 
     function addPost(postData) {
-        axios.post('http://127.0.0.1:7001/posts/CreatePosts', postData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        fetch('http://127.0.0.1:7001/posts/CreatePosts', {
+            method: 'POST',
+            body: postData,
         })
             .then(response => {
                 console.log('Post created:', response.data);
