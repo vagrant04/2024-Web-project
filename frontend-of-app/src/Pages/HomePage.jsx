@@ -2,6 +2,8 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from 'axios';
 
+import {getCurrentUser} from "../util/currentUser.util.js";
+
 export default function HomePage() {
     const navigate = useNavigate();
     const [circles, setCircles] = useState([]);
@@ -34,11 +36,23 @@ export default function HomePage() {
         navigate(`/CirclePage/${circleId}`);
     };
 
+    const currentUser = getCurrentUser();
+    console.log('currentUser of HomePage: ', currentUser);
+
     return (
         <div className="max-w-6xl mx-auto py-10">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-3xl font-bold">发现圈子</h1>
-                <button onClick={handleCreate} className="bg-blue-500 text-white py-2 px-4 rounded">创建</button>
+                {currentUser && (
+                    <div className="flex items-center">
+                        <span className="text-gray-700 mr-3"><strong>{currentUser.username}</strong></span>
+                        <img
+                            src={`http://127.0.0.1:7001/uploads/${currentUser.avatar}`}
+                            alt="avatar"
+                            className="w-10 h-10 rounded-full mr-3"
+                        />
+                    </div>
+                )}
             </div>
 
             <div className="flex border-b mb-8">
@@ -56,7 +70,7 @@ export default function HomePage() {
                         <label className="block text-gray-700">城市</label>
                         <select
                             className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option>苏州市</option>
+                            <option>南京市</option>
                             <option>北京市</option>
                             <option>上海市</option>
                         </select>
@@ -66,11 +80,12 @@ export default function HomePage() {
                         <select
                             className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option>全部类型</option>
-                            <option>类型1</option>
-                            <option>类型2</option>
+                            <option>体育类</option>
+                            <option>娱乐类</option>
                         </select>
                     </div>
                 </div>
+                <button onClick={handleCreate} className="bg-blue-500 text-white py-2 px-4 rounded">创建兴趣圈</button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -78,8 +93,8 @@ export default function HomePage() {
                     <div key={circle.id} className="bg-white rounded-lg shadow p-6">
                         <img src={`http://127.0.0.1:7001/uploads/${circle.imagePath}`} alt={circle.name} className="w-full h-48 object-cover rounded-t-lg"/>
                         <h2 className="mt-4 text-xl font-bold">{circle.name}</h2>
-                        <p className="text-gray-500">创建者: {circle.creator} | 成员: {circle.members.length}</p>
-                        <button onClick={() => handleJoin(circle.id)} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">加入</button>
+                        <p className="text-gray-500">创建者: {circle.creatorName} | 帖子数: {circle.posts.length}</p>
+                        <button onClick={() => handleJoin(circle.id)} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">进入兴趣圈</button>
                     </div>
                 ))}
             </div>

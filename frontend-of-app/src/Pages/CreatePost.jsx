@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import 'tailwindcss/tailwind.css';
 
+import {getCurrentUser} from "../util/currentUser.util.js";
+
 function CreatePost() {
     const navigate = useNavigate();
     const { circleId } = useParams();
@@ -14,6 +16,7 @@ function CreatePost() {
         e.preventDefault();
         if (postText && postImage) {
             const formData = new FormData();
+            formData.append('authorId', getCurrentUser().id);
             formData.append('circleId', circleId);
             formData.append('content', postText);
 

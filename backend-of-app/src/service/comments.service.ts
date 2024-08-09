@@ -12,6 +12,7 @@ export class CommentsService {
       id: data.comments.length + 1,
       postId: postId,
       creator: creator,
+      creatorName: data.users.find(user => user.id === creator).username,
       text: content,
     };
     data.posts.find(post => post.id === postId).comments.push(newComment.id);

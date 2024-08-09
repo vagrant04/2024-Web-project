@@ -3,6 +3,8 @@ import {useNavigate} from "react-router-dom";
 import 'tailwindcss/tailwind.css';
 import axios from 'axios';
 
+import {getCurrentUser} from "../util/currentUser.util.js";
+
 function CreateCircle() {
     const navigate = useNavigate();
     const [circleName, setCircleName] = useState('');
@@ -13,6 +15,9 @@ function CreateCircle() {
         if (circleName && circleImage) {
             const formData = new FormData();
             formData.append('name', circleName);
+
+            const currentUser = getCurrentUser();
+            formData.append('creatorId', currentUser.id);
 
             const fileInput = document.querySelector('input[type="file"]');
             const file = fileInput.files[0];

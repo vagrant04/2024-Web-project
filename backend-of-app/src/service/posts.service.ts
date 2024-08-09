@@ -13,13 +13,15 @@ export class PostsService {
     return data.posts.find(post => post.id === postId);
   }
 
-  async createPost(post: { circleId: number; content: string; images: string }) {
+  async createPost(post: { authorId: number; circleId: number; content: string; images: string }) {
     const newPost = {
       id: data.posts.length + 1,
-      ...post,
+      circleId: post.circleId,
+      content: post.content,
+      images: post.images,
       time: new Date().toISOString(),
-      authorName: 'Anonymous', // You can replace this with actual author data
-      authorAvatar: 'https://example.com/default-avatar.jpg', // Default avatar
+      authorName: data.users[post.authorId - 1].username, // You can replace this with actual author data
+      authorAvatar: data.users[post.authorId - 1].avatar, // Default avatar
       date: new Date().toLocaleDateString(),
       likes: 0,
       comments: [],

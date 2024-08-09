@@ -2,16 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import {useState} from "react";
 import axios from 'axios';
 
-// 登录时存储用户信息
-const loginUser = (user) => {
-    localStorage.setItem('currentUser', user);
-};
-
-// 获取当前登录用户信息
-const getCurrentUser = () => {
-    const user = localStorage.getItem('currentUser');
-    return user ? JSON.parse(user) : null;
-};
+import {loginUser} from "../util/currentUser.util.js";
 
 export default function LoginForm() {
     const navigate = useNavigate();
@@ -19,14 +10,6 @@ export default function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
-    function handleRegister() {
-        // 注册逻辑...
-        // 注册成功后跳转到主页
-        if (email === 'admin' && password === 'admin') {
-            navigate('/Homepage');
-        }
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,13 +23,14 @@ export default function LoginForm() {
                     'Content-Type': 'application/json'
                 }
             });
-            if (response.status === 200 || response.data.user) {
+            if (response.data !== 'Invalid email or password') {
                 console.log(response.data);
                 // Store user information in local storage
                 loginUser(response.data);
                 // Redirect to homepage
                 navigate('/Homepage');
             } else {
+                alert('Invalid email or password');
                 setError('Invalid email or password');
             }
         } catch (err) {

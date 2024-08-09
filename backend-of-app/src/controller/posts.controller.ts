@@ -27,7 +27,7 @@ export class PostsController {
     @Files() files
     //@Files() files: any
   ) {
-    const { circleId, content } = fields;
+    const { authorId, circleId, content } = fields;
     const file = files[0];
 
     console.log('file: ', file);
@@ -36,10 +36,11 @@ export class PostsController {
     }
 
     const intCircleId = parseInt(circleId, 10);
+    const intAuthorId = parseInt(authorId, 10);
     const filePath = join(__dirname, '../../uploads', file.filename);
     await fs.promises.rename(file.data, filePath);
 
-    const newPost = await this.postsService.createPost({ circleId: intCircleId, content, images: file.filename});
+    const newPost = await this.postsService.createPost({ authorId: intAuthorId, circleId: intCircleId, content, images: file.filename});
     return newPost;
   }
 }

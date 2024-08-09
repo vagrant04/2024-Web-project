@@ -5,6 +5,8 @@ import 'tailwindcss/tailwind.css';
 import PropTypes from "prop-types";
 import axios from 'axios';
 
+import {getCurrentUser} from "../util/currentUser.util.js";
+
 import comment_icon from '../../svgs/comment-regular.svg';
 import like_icon from '../../svgs/thumbs-up-solid.svg';
 import share_icon from '../../svgs/share-from-square-solid.svg';
@@ -51,7 +53,7 @@ export default function CirclePage(){
             <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
                 <h2 className="text-3xl font-bold mb-4">{circle.name}</h2>
                 {posts.map((post, index) => (
-                    <PostCard key={index} post={post}/>
+                    <PostCard key={index} post={post} posts={posts} setPosts={setPosts}/>
                 ))}
                 <button onClick={handleCreatePost}
                         className="w-full bg-blue-500 text-white py-2 mt-4 rounded-lg hover:bg-blue-600 transition duration-200">
@@ -81,7 +83,7 @@ CirclePage.propTypes = {
     })).isRequired,
 };
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, posts, setPosts }) => {
     const [comments, setComments] = useState([]);
     const [newCommentText, setNewCommentText] = useState('');
 
@@ -98,7 +100,7 @@ const PostCard = ({ post }) => {
     const addComment = (postId, text) => {
         const newComment = {
             postId,
-            creator: 1, // 假设当前用户ID为1
+            creator: getCurrentUser().id,
             text
         };
 
@@ -109,6 +111,17 @@ const PostCard = ({ post }) => {
         })
             .then(response => {
                 setComments([...comments, response.data]);
+                // 更新 post.comments 数组
+                const updatedPosts = posts.map(post => {
+                    if (post.id === postId) {
+                        return {
+                            ...post,
+                            comments: [...post.comments, response.data]
+                        };
+                    }
+                    return post;
+                });
+                setPosts(updatedPosts);
             })
             .catch(error => {
                 console.error('Error creating comment:', error);
@@ -119,7 +132,7 @@ const PostCard = ({ post }) => {
         <div className="mb-6 p-4 border rounded-lg shadow-sm">
             <div className="flex items-center mb-4">
                 <img
-                    src={post.authorAvatar}
+                    src={`http://127.0.0.1:7001/uploads/${post.authorAvatar}`}
                     alt="avatar"
                     className="w-10 h-10 rounded-full mr-3"
                 />
@@ -150,11 +163,13 @@ const PostCard = ({ post }) => {
                 <h5 className="text-lg font-bold mb-2">评论</h5>
                 {comments.map(comment => (
                     <div key={comment.id} className="mb-2">
-                        <p className="text-sm text-gray-800 text-left">{comment.creator}: {comment.text}</p>
+                        <p className="text-sm text-gray-800 text-left">
+                            <strong>{comment.creatorName}</strong>: {comment.text}
+                        </p>
                     </div>
                 ))}
                 <div className="flex items-center mt-4">
-                    <input
+                <input
                         type="text"
                         value={newCommentText}
                         onChange={e => setNewCommentText(e.target.value)}

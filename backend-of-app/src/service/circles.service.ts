@@ -7,11 +7,13 @@ export class CirclesService {
     return data.circles;
   }
 
-  async createCircle(circle: { name: string; imagePath: any }) {
+  async createCircle(circle: { name: string; creatorId: number; imagePath: any }) {
     const newCircle = {
       id: data.circles.length + 1,
       name: circle.name,
-      creator: 1,
+      creator: circle.creatorId,
+      creatorName: data.users.find(user => user.id === circle.creatorId)
+        .username,
       members: [],
       imagePath: circle.imagePath, // Assuming the file is saved in the uploads directory
       posts: [],

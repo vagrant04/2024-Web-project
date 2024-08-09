@@ -36,10 +36,12 @@ export class CirclesController {
 
   @Post('/CreateCircles')
   async createCircle(@Fields() fields, @Files() files) {
-    const { name } = fields;
+    const { name, creatorId } = fields;
     const file = files[0];
 
     //console.log('body: ', body);
+    console.log('fields: ', fields);
+    console.log('creatorId: ', creatorId);
     console.log('files: ', files);
     console.log('name: ', name);
     console.log('file: ', file);
@@ -52,11 +54,9 @@ export class CirclesController {
     const filePath = join(__dirname, '../../uploads', file.filename);
     await fs.promises.rename(file.data, filePath);
 
-    // const frontend_filePath = `uploads/${file.filename}`;
-    // console.log('frontend_filePath: ', frontend_filePath);
-    // console.log('filePath: ', filePath);
+    const intcreatorId = parseInt(creatorId);
 
-    const newCircle = await this.circlesService.createCircle({ name, imagePath: file.filename});
+    const newCircle = await this.circlesService.createCircle({ name, creatorId: intcreatorId, imagePath: file.filename});
     return newCircle;
   }
 }
