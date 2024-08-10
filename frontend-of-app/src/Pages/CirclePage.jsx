@@ -90,7 +90,7 @@ const PostCard = ({ post, posts, setPosts }) => {
     useEffect(() => {
         axios.get(`http://127.0.0.1:7001/comments/GetComments_By_Post_ID/${post.id}`)
             .then(response => {
-                setComments(response.data);
+                setComments(response.data); 
             })
             .catch(error => {
                 console.error('Error fetching comments:', error);
