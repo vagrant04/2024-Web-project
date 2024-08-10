@@ -26,6 +26,18 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+
+    #前端构建
+    - name: Install and build frontend
+      run : |
+        cd frontend-of-app
+        npm ci
+        npm run build --if-present
+        npm test
+    #后端构建
+    - name: Install and build backend
+      run: |
+        cd backend-of-app
+        npm ci
+        npm run build --if-present
+        npm test
