@@ -29,15 +29,15 @@ jobs:
 
     #前端构建
     - name: Install and build frontend
+      working-directory: frontend-of-app
       run : |
-        cd frontend-of-app
         npm ci
         npm run build --if-present
         npm test
     #后端构建
     - name: Install and build backend
+      working-directory: backend-of-app
       run: |
-        cd backend-of-app
         npm ci
         npm run build --if-present
         npm test
